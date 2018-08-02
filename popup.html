@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			width: 170px;
+			min-width: 100px;
+			font-size: 13px;
+			-webkit-user-select: none;
+		}
+
+		ul,li,body,p{
+			padding: 0;
+			margin: 0;
+		}
+
+		a{
+			text-decoration: none;
+			color: #000000;
+		}
+
+		li a{
+
+			display: inline-block;
+			/*margin-left: 5px;*/
+			color: #555555;
+			line-height: 25px;
+		}
+
+		a:hover{
+			text-decoration: none;
+			color: #E68383;
+		}
+
+		.container{
+			margin-top: 8px;
+		}
+
+		ul{
+			list-style: none;
+			padding: 0 15px 0 15px;
+		}
+
+		ul li{
+			display: block;
+			height: 25px;
+			border-bottom: 1px dashed #AAAAAA;
+			text-align: left;
+		}
+
+		li:last-child{
+			border: none;
+		}
+
+		li:hover{
+			color: #E68383;
+			background-color: #F1F1F1;
+			-webkit-transition: all .4s ease;
+		}
+
+		.title{
+			text-align: center;
+			padding: 5px 5px;
+			font-size: 12px;
+			font-weight: 700;
+			border-bottom: 1px dotted #AAAAAA;
+			cursor: default;
+		}
+
+		.fr{
+			float: right;
+		}
+
+		.footer{
+			margin-top: 8px;
+			border-top: 1px dotted #AAAAAA;
+			padding: 5px 5px 3px 5px;
+		}
+
+		.github img{
+			height: 15px;
+			width: 15px;
+			margin-left: 15px;
+		}
+
+		.setting{
+			margin-left: 5px;
+			cursor: pointer;
+		}
+
+		.feedback a:hover{
+			color: #d4237a;
+		}
+
+		b{
+			display: inline-block;
+			width: 14px;
+			height: 14px;
+			background: url("img/ui-icons.png") center left no-repeat;
+			margin-right: 5px;
+			-webkit-transition: all .5s ease;
+		}
+
+		li:hover b{
+			-webkit-transform: rotateZ(360deg);
+		}
+		.uat-new b{
+			background-position: -113px -80px;
+		}
+
+		.engine-new b{
+			background-position: -224px -111px;
+		}
+
+		.uat-rts b{
+			background-position: -144px -95px;
+		}
+
+		.engine-rts b{
+			background-position: -16px -111px;
+		}
+	</style>
+</head>
+<body>
+	<div class="title"><p>规则系统小工具</p></div>
+	<div class="container">
+		<ul>
+			<li class="uat-new"><b></b><a href="#" id="open_url_new_tab_uat_new">测试系统规则平台</a></li>
+			<li class="engine-new"><b></b><a href="#" id="open_url_new_tab_engine_new">生产系统规则平台</a></li>
+			<li class="uat-rts"><b></b><a href="#" id="open_url_new_tab_rts_test">测试TeamServer</a></li>
+			<li class="engine-rts"><b></b><a href="#" id="open_url_new_tab_rts_engine">生产TeamServer</a></li>
+		</ul>
+		<!--<select id="role_select">-->
+			<!--<option value="admin">超级管理员</option>-->
+			<!--<option value="zgs">总公司</option>1296db-->
+			<!--<option value="beijing">北京</option>-->
+		<!--</select>-->
+	</div>
+	<div class="footer">
+		<div class="setting fr">设置</div>
+		<div class="feedback fr"><a href="#">反馈</a></div>
+		<div class="github"><a href="https://github.com/zhaojun0193"  title="访问github" target="_blank">
+			<img src="img/github.png" alt="github">
+		</a></div>
+	</div>
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popup.js"></script>
+</body>
+</html>

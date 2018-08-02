@@ -1,0 +1,51 @@
+{
+    "manifest_version": 2,
+    "name": "test",
+    "version": "1.0.0",
+    "description": "规则系统小工具",
+    "icons":
+    {
+        "16": "img/icon16.png",
+        "48": "img/icon48.png",
+        "128": "img/icon128.png"
+    },
+    "background":
+    {
+        "page": "background.html"
+    },
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true,
+        "open_in_tab": true
+    },
+    "browser_action":
+    {
+        "default_icon": "img/icon16.png",
+        "default_title": "规则系统小工具",
+        "default_popup": "popup.html"
+    },
+    "permissions":
+    [
+        "contextMenus",
+        "tabs",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "storage"
+    ],
+    "homepage_url": "https://www.baidu.com",
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/groupama/loginForward.do",
+                "http://*/groupama-new/loginForward.do",
+                "http://*/groupama/login.do",
+                "http://*/groupama-new/login.do",
+                "http://localhost:9999/web/login.do",
+                "http://localhost:9999/web/loginForward.do"
+            ],
+            "js": ["js/login.js"],
+            "run_at": "document_end"
+        }
+    ]
+}
