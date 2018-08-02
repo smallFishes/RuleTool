@@ -1,36 +1,48 @@
 /**
  * Created by hasee on 2018/7/31.
  */
-//获取验证码
-var code = document.getElementById("checkCode").innerText;
-//注入验证码
-document.getElementById("inputCode").value = code;
+//读取配置
+var options = null;
+var engine_ips = ["10.28.19.25","10.28.16.84","10.28.16.85"];
+var test_ips = ["10.28.7.25","10.28.3.15","10.28.3.18"];
+chrome.storage.local.get('rule_options',function(result){
+    options = result.rule_options;
 
-chrome.storage.local.get('role',function(result){
-    var role = result.role;
     var url = window.location.href;
     var ip = url_split(url);
-    var engine_ips = ["10.28.19.25","10.28.16.84","10.28.16.85"];
-    var test_ips = ["10.28.7.25","10.28.3.15","10.28.3.18"];
     var username = document.getElementById("username");
     var password = document.getElementById("password");
-    if(role === "admin"){
-        //生产
-        if(isInArray(engine_ips,ip)){
-            username.value = "admin";
-        }//测试
-        else if(isInArray(test_ips,ip)){
-            username.value = "adminuat";
+    //生产
+    if(isInArray(engine_ips,ip)){
+        username.value = options.login_setting.engine.username;
+        password.value = options.login_setting.engine.password;
+        if(options.login_setting.engine.isAutoCode){
+            autoCode();
+            if(options.login_setting.engine.isAutoLogin){
+                document.getElementById("login").click();
+            }
         }
-    }else if(role === "zgs"){
-        username.value = "2000000000";
-        password.value = "";
 
-    }else if(role === "beijing"){
-        username.value = "2110000000";
-        password.value = "";
+    }//测试
+    else if(isInArray(test_ips,ip)){
+        username.value = options.login_setting.uat.username;
+        password.value = options.login_setting.uat.password;
+        if(options.login_setting.uat.isAutoCode){
+            autoCode();
+            if(options.login_setting.uat.isAutoLogin){
+                document.getElementById("login").click();
+            }
+        }
     }
 });
+
+
+function autoCode(){
+    //获取验证码
+    var code = document.getElementById("checkCode").innerText;
+    //注入验证码
+    document.getElementById("inputCode").value = code;
+}
 
 function isInArray(arr,value){
     for(var i = 0; i < arr.length; i++){
