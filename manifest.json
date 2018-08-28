@@ -42,7 +42,9 @@
                 "http://*/groupama/login.do",
                 "http://*/groupama-new/login.do",
                 "http://localhost:9999/web/login.do",
-                "http://localhost:9999/web/loginForward.do"
+                "http://localhost:9999/web/loginForward.do",
+                "http://127.0.0.1:9999/web/login.do",
+                "http://127.0.0.1:9999/web/loginForward.do"
             ],
             "js": ["js/login.js"],
             "run_at": "document_end"
