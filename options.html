@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>规则系统小工具配置项</title>
     <link href="css/options.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -16,6 +17,7 @@
     </div>
     <div class="login-setting">
         <h1 class="setting-title">登录设置</h1>
+
         <fieldset>
             <legend>测试环境</legend>
             <table>
@@ -62,9 +64,37 @@
                 </tbody>
             </table>
         </fieldset>
+        <div id="showAddress">
+            <button id="addAddress">添加新网址</button>
+            <fieldset id="addFieldSet">
+                <legend><h1>添加网址</h1></legend>
+                <table>
+                    <tr>
+                        <td>显示名称：</td>
+                        <td>
+                            <input type="text" id="add_showName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>网址：</td>
+                        <td>
+                            <input type="text" id="add_address">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="saveData">保存数据</button>
+                        </td>
+                        <td>
+                            <button id="hideFieldSet">取&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
         <h1 class="setting-title">网址设置</h1>
-        <fieldset>
-            <legend>允许跳转的平台</legend>
+        <fieldset id="showJumpAddress">
+            <legend>显示跳转的平台</legend>
             <table>
                 <tbody>
                 <tr>
@@ -85,6 +115,9 @@
                 </tr>
                 </tbody>
             </table>
+            <table id="showCustomizeAddress">
+
+            </table>
         </fieldset>
 
     </div>
@@ -94,7 +127,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+
 <script type="text/javascript" src="js/options.js"></script>
 </body>
 </html>
