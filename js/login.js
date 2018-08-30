@@ -5,6 +5,7 @@
 var options = null;
 var engine_ips = ["10.28.19.25","10.28.16.84","10.28.16.85"];
 var test_ips = ["10.28.7.25","10.28.3.15","10.28.3.18"];
+var local_ips = ["127.0.0.1","localhost"];
 chrome.storage.local.get('rule_options',function(result){
     options = result.rule_options;
 
@@ -33,6 +34,9 @@ chrome.storage.local.get('rule_options',function(result){
                 document.getElementById("login").click();
             }
         }
+    }//本地
+    else if(isInArray(local_ips,ip)){
+        autoCode();
     }
 });
 

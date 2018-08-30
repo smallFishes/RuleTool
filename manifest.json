@@ -38,11 +38,17 @@
         {
             "matches": [
                 "http://*/groupama/loginForward.do",
+                "http://*/groupama/loginFailure.do",
                 "http://*/groupama-new/loginForward.do",
+                "http://*/groupama-new/loginFailure.do",
                 "http://*/groupama/login.do",
                 "http://*/groupama-new/login.do",
                 "http://localhost:9999/web/login.do",
-                "http://localhost:9999/web/loginForward.do"
+                "http://localhost:9999/web/loginForward.do",
+                "http://localhost:9999/web/loginFailure.do",
+                "http://127.0.0.1:9999/web/login.do",
+                "http://127.0.0.1:9999/web/loginForward.do",
+                "http://127.0.0.1:9999/web/loginFailure.do"
             ],
             "js": ["js/login.js"],
             "run_at": "document_end"
