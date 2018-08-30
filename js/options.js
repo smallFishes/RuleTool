@@ -1,89 +1,23 @@
 /**
- * Created by hasee on 2018/8/1.
+ * 页面加载执行
  */
-options1 = {
-    "login_setting":{
-        "uat":{
-            "username":"adminuat",
-            "password":"admin_engine",
-            "isAutoLogin":false,
-            "isAutoCode":true
-        },
-        "engine":{
-            "username":"admin",
-            "password":"admin_engine",
-            "isAutoLogin":false,
-            "isAutoCode":true
-        }
-    },
-    "website":{
-        "uat_site":true,
-        "engine_site":true,
-        "uat_rts":false,
-        "engine_rts":false
-    },
-    "customizeAddress": [
+$(function(){
+    initialize();
+});
 
-    ],
-    "webset": [
-
-    ]
-};
-options = {
-    "login_setting":{
-        "uat":{
-            "username":"adminuat",
-            "password":"admin_engine",
-            "isAutoLogin":false,
-            "isAutoCode":true
-        },
-        "engine":{
-            "username":"admin",
-            "password":"admin_engine",
-            "isAutoLogin":false,
-            "isAutoCode":true
-        }
-    },
-    "website":{
-        "uat_site":true,
-        "engine_site":true,
-        "uat_rts":false,
-        "engine_rts":false
-    },
-    "customizeAddress": [
-
-    ],
-    "webset": [
-
-    ]
-};
-
-function initChroem() {
-    chrome.storage.local.set({rule_options: options1}, function () {
-        chrome.notifications.create(null, {
-            type: 'basic',
-            iconUrl: 'img/success.png',
-            title: '提示',
-            message: '保存成功'
-        });
+/**
+ * 初始化页面数据
+ */
+function initialize() {
+    chrome.storage.local.get('rule_options',function(result){
+        loadOptions(result.rule_options);
     });
 }
 
 /**
- * 页面加载执行
- */
-$(function(){
-    getDateToChrome();
-    $("#addAddress").on("click", addAddress);
-    $("#saveData").on("click", saveData);
-    $("#hideFieldSet").on("click", hideFieldSet);
-    $("#addFieldSet").hide();
-});
-
-/**
  * 显示所有网址修改表格
  */
-function showSetAddressAll() {
+function showSetAddressAll(options) {
     $.each(options.customizeAddress, function (i, item) {
         showSetAddress(item.id, item);
     });
@@ -92,7 +26,7 @@ function showSetAddressAll() {
 /**
  * 显示单个网址修改表格
  * @param i
- * @param data
+ * @param item
  */
 function showSetAddress(i, item) {
     var fieldset =
@@ -119,7 +53,7 @@ function showSetAddress(i, item) {
 /**
  * 显示所有网址展示列表
  */
-function showCustomizeAddressAll() {
+function showCustomizeAddressAll(options) {
     $.each(options.customizeAddress, function (i, item) {
         $.each(options.webset, function (j, webSet) {
             if(item.id == webSet.id) {
@@ -149,35 +83,37 @@ function showCustomizeAddress(i, data, webSet) {
  * 保存默认网址的配置
  */
 $("#save").click(function(){
-    options.login_setting.uat.username = $("#username-test").val();
-    options.login_setting.uat.password = $("#password-test").val();
-    options.login_setting.uat.isAutoCode = $("#isAutoCode-test").is(':checked');
-    options.login_setting.uat.isAutoLogin = $("#isAutoLogin-test").is(':checked');
+    chrome.storage.local.get('rule_options',function(result){
+        var options = result.rule_options;
+        options.login_setting.uat.username = $("#username-test").val();
+        options.login_setting.uat.password = $("#password-test").val();
+        options.login_setting.uat.isAutoCode = $("#isAutoCode-test").is(':checked');
+        options.login_setting.uat.isAutoLogin = $("#isAutoLogin-test").is(':checked');
 
-    options.login_setting.engine.username = $("#username-engine").val();
-    options.login_setting.engine.password = $("#password-engine").val();
-    options.login_setting.engine.isAutoCode = $("#isAutoCode-engine").is(':checked');
-    options.login_setting.engine.isAutoLogin = $("#isAutoLogin-engine").is(':checked');
+        options.login_setting.engine.username = $("#username-engine").val();
+        options.login_setting.engine.password = $("#password-engine").val();
+        options.login_setting.engine.isAutoCode = $("#isAutoCode-engine").is(':checked');
+        options.login_setting.engine.isAutoLogin = $("#isAutoLogin-engine").is(':checked');
 
-    options.website.uat_site = $("#uat-new-ch").is(':checked');
-    options.website.engine_site = $("#engine-new-ch").is(':checked');
-    options.website.uat_rts = $("#uat-rts-ch").is(':checked');
-    options.website.engine_rts = $("#engine-rts-ch").is(':checked');
+        options.website.uat_site = $("#uat-new-ch").is(':checked');
+        options.website.engine_site = $("#engine-new-ch").is(':checked');
+        options.website.uat_rts = $("#uat-rts-ch").is(':checked');
+        options.website.engine_rts = $("#engine-rts-ch").is(':checked');
 
-    $("#showCustomizeAddress input:checkbox").each(function (i, item) {
-        var id = $(this).attr('id');
-        var index = id.substr(id.lastIndexOf("_")+1);
-        var flag = $(item).is(':checked');
-        for(var j=0; j<options.webset.length; j++) {
-            var webset = options.webset[j];
-            if(webset.id == index) {
-                webset.auto_site = flag;
-                options.webset[j] = webset;
+        $("#showCustomizeAddress input:checkbox").each(function (i, item) {
+            var id = $(this).attr('id');
+            var index = id.substr(id.lastIndexOf("_")+1);
+            var flag = $(item).is(':checked');
+            for(var j=0; j<options.webset.length; j++) {
+                var webset = options.webset[j];
+                if(webset.id == index) {
+                    webset.auto_site = flag;
+                    options.webset[j] = webset;
+                }
             }
-        }
+        });
+        saveDateToChrome(options, "save");
     });
-    saveDateToChrome(options, "save");
-    getDateToChrome();
 });
 
 /**
@@ -196,21 +132,38 @@ $("#cancel").click(function(){
  * 加载初始页面网址
  * @param rule_options
  */
-function loadOptions(rule_options){
-    $("#username-test").val(rule_options.login_setting.uat.username);
-    $("#password-test").val(rule_options.login_setting.uat.password);
-    $("#isAutoCode-test").attr("checked",rule_options.login_setting.uat.isAutoCode);
-    $("#isAutoLogin-test").attr("checked",rule_options.login_setting.uat.isAutoLogin);
+function loadOptions(options){
+    //固定表单
+    $("#username-test").val(options.login_setting.uat.username);
+    $("#password-test").val(options.login_setting.uat.password);
+    $("#isAutoCode-test").attr("checked",options.login_setting.uat.isAutoCode);
+    $("#isAutoLogin-test").attr("checked",options.login_setting.uat.isAutoLogin);
 
-    $("#username-engine").val(rule_options.login_setting.engine.username);
-    $("#password-engine").val(rule_options.login_setting.engine.password);
-    $("#isAutoCode-engine").attr("checked",rule_options.login_setting.engine.isAutoCode);
-    $("#isAutoLogin-engine").attr("checked",rule_options.login_setting.engine.isAutoLogin);
+    $("#username-engine").val(options.login_setting.engine.username);
+    $("#password-engine").val(options.login_setting.engine.password);
+    $("#isAutoCode-engine").attr("checked",options.login_setting.engine.isAutoCode);
+    $("#isAutoLogin-engine").attr("checked",options.login_setting.engine.isAutoLogin);
 
-    $("#uat-new-ch").attr("checked",rule_options.website.uat_site);
-    $("#engine-new-ch").attr("checked",rule_options.website.engine_site);
-    $("#uat-rts-ch").attr("checked",rule_options.website.uat_rts);
-    $("#engine-rts-ch").attr("checked",rule_options.website.engine_rts);
+    $("#uat-new-ch").attr("checked",options.website.uat_site);
+    $("#engine-new-ch").attr("checked",options.website.engine_site);
+    $("#uat-rts-ch").attr("checked",options.website.uat_rts);
+    $("#engine-rts-ch").attr("checked",options.website.engine_rts);
+
+    $("#version").html(options.version);
+
+    //加载自定义网址表单
+    showCustomizeAddressAll(options);
+    showSetAddressAll(options);
+    $.each(options.customizeAddress, function (i, item) {
+        $("#delete_auto_id_"+item.id).on('click',delete_address);
+        $("#save_auto_id_"+item.id).on('click',save_address);
+    });
+
+    //设置监听
+    $("#addAddress").on("click", addAddress);
+    $("#saveData").on("click", saveData);
+    $("#hideFieldSet").on("click", hideFieldSet);
+    $("#addFieldSet").hide();
 }
 
 /**
@@ -225,28 +178,29 @@ function addAddress() {
  * 保存添加的新网址
  */
 function saveData() {
-
-    var add_showName = $("#add_showName").val();
-    var add_address = $("#add_address").val();
-    var time = new Date().getTime();
-    var address = {
-        "id":time,
-        "address":add_address,
-        "showname":add_showName
-    };
-    var webset = {
-        "id":time,
-        "auto_site" : false
-    };
-    options.customizeAddress.push(address);
-    options.webset.push(webset);
-    saveDateToChrome(options);
-    getDateToChrome();
-    showCustomizeAddress(time, address, webset);
-    showSetAddress(time, address);
-    reset();
-    $("#delete_auto_id_"+time).on('click',delete_address);
-    $("#save_auto_id_"+time).on('click',save_address);
+    chrome.storage.local.get('rule_options',function(result) {
+        var options = result.rule_options;
+        var add_showName = $("#add_showName").val();
+        var add_address = $("#add_address").val();
+        var time = new Date().getTime();
+        var address = {
+            "id":time,
+            "address":add_address,
+            "showname":add_showName
+        };
+        var webset = {
+            "id":time,
+            "auto_site" : false
+        };
+        options.customizeAddress.push(address);
+        options.webset.push(webset);
+        saveDateToChrome(options);
+        showCustomizeAddress(time, address, webset);
+        showSetAddress(time, address);
+        reset();
+        $("#delete_auto_id_"+time).on('click',delete_address);
+        $("#save_auto_id_"+time).on('click',save_address);
+    });
 }
 
 /**
@@ -254,42 +208,44 @@ function saveData() {
  */
 function save_address() {
     var _this = $(this);
-    var id = _this.attr('id');
-    var index = id.substr(id.lastIndexOf("_")+1);
-    for(var i=0;  i < options.customizeAddress.length; i++) {
-        var customizeAddress = options.customizeAddress[i];
-        if(customizeAddress.id == index) {
-            options.customizeAddress[i].address = $("#showname_auto_id_"+index).val();
-            options.customizeAddress[i].showname = $("#address_auto_id_"+index).val();
+    chrome.storage.local.get('rule_options',function(result) {
+        var options = result.rule_options;
+        var id = _this.attr('id');
+        var index = id.substr(id.lastIndexOf("_")+1);
+        for(var i=0;  i < options.customizeAddress.length; i++) {
+            var customizeAddress = options.customizeAddress[i];
+            if(customizeAddress.id == index) {
+                options.customizeAddress[i].address = $("#showname_auto_id_"+index).val();
+                options.customizeAddress[i].showname = $("#address_auto_id_"+index).val();
+            }
         }
-    }
-    saveDateToChrome(options);
-    getDateToChrome();
-    $("#auto_showname_id_"+index).html($("#showname_auto_id_"+index).val());
+        saveDateToChrome(options);
+        $("#auto_showname_id_"+index).html($("#showname_auto_id_"+index).val());
+    });
+
 }
 
 /**
  * 删除网址
  */
 function delete_address(){
-    console.log("delete_address()");
     var _this = $(this);
-    var id = _this.attr('id');
-    var index = id.substr(id.lastIndexOf("_")+1);
-    console.log("index",index);
-    for(var i=0; i < options.customizeAddress.length; i++) {
-        var customizeAddress = options.customizeAddress[i];
-        if(customizeAddress.id == index) {
-            options.customizeAddress.splice(i,1);
-            options.webset.splice(i,1);
+    chrome.storage.local.get('rule_options',function(result){
+        var options = result.rule_options;
+        var id = _this.attr('id');
+        var index = id.substr(id.lastIndexOf("_")+1);
+        for(var i=0; i < options.customizeAddress.length; i++) {
+            var customizeAddress = options.customizeAddress[i];
+            if(customizeAddress.id == index) {
+                options.customizeAddress.splice(i,1);
+                options.webset.splice(i,1);
+            }
         }
-    }
-    saveDateToChrome(options);
-    getDateToChrome();
-    $($(_this).parent().parent().parent().parent().parent()).remove();
-    console.log("#auto_customize_id_"+index);
+        saveDateToChrome(options);
+        $($(_this).parent().parent().parent().parent().parent()).remove();
 
-    $("#auto_customize_id_"+index).parent().parent().remove();
+        $("#auto_customize_id_"+index).parent().parent().remove();
+    });
 }
 
 
@@ -325,38 +281,4 @@ function saveDateToChrome(date, flag) {
             });
         }
     });
-}
-
-/**
- * 从Chrome中获取数据
- */
-function getDateToChrome() {
-    chrome.storage.local.get('rule_options',function(result){
-        test(result.rule_options);
-    });
-}
-
-var flag = true;
-/**
- * Chrome和本地数据同步
- */
-function test(date) {
-    options = date;
-    if(flag) {
-        showCustomizeAddressAll();
-        showSetAddressAll();
-        $.each(options.customizeAddress, function (i, item) {
-            $("#delete_auto_id_"+item.id).on('click',delete_address);
-            $("#save_auto_id_"+item.id).on('click',save_address);
-        });
-        if(options){
-            //已有配置则加载
-            loadOptions(options);
-        }else{
-            //设置默认配置
-            chrome.storage.local.set({rule_options: options});
-            loadOptions(options);
-        }
-        flag = false;
-    }
 }
