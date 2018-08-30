@@ -18,13 +18,24 @@ chrome.storage.local.get('rule_options',function(result){
         $("#sites").append("<li class=\"engine-rts\"><b></b><a href=\"#\" id=\"open_url_new_tab_rts_engine\">生产TeamServer</a></li>");
     }
 
+    for(var i=0; i<result.rule_options.webset.length; i++) {
+        var item = result.rule_options.webset[i];
+        var customizeAddress = result.rule_options.customizeAddress[i];
+        if(item.auto_site) {
+            $("#sites").append('<li class="engine-rts"><b></b><a href="#" id="auto_click_address_id_'+item.id+'">'+customizeAddress.showname+'</a></li>');
+            $("#auto_click_address_id_"+item.id).click(function () {
+                chrome.tabs.create({url: customizeAddress.address});
+            });
+        }
+    }
+
     //绑定事件
     $('#open_url_new_tab_uat_new').click(function () {
-        chrome.tabs.create({url: 'http://10.28.3.15:7011/groupama-new/index.do'});
+        chrome.tabs.create({url: 'http://10.28.3.15:7011/groupama-new/login.do'});
     });
 
     $('#open_url_new_tab_engine_new').click(function () {
-        chrome.tabs.create({url: 'http://10.28.16.84:7011/groupama-new/index.do'});
+        chrome.tabs.create({url: 'http://10.28.16.84:7011/groupama-new/login.do'});
     });
 
     $('#open_url_new_tab_rts_test').click(function () {
