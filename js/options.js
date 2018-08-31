@@ -70,7 +70,6 @@ function showCustomizeAddressAll(options) {
  * @param webSet
  */
 function showCustomizeAddress(i, data, webSet) {
-    console.log("showCustomizeAddress", webSet)
     var tr =
         '<tr>'+
             '<td><input type="checkbox" id="auto_customize_id_'+i+'" '+(webSet.auto_site? 'checked="checked"' : '')+'></td>'+
@@ -112,7 +111,7 @@ $("#save").click(function(){
                 }
             }
         });
-        saveDateToChrome(options, "save");
+        saveDataToChrome(options, "save");
     });
 });
 
@@ -194,7 +193,7 @@ function saveData() {
         };
         options.customizeAddress.push(address);
         options.webset.push(webset);
-        saveDateToChrome(options);
+        saveDataToChrome(options);
         showCustomizeAddress(time, address, webset);
         showSetAddress(time, address);
         reset();
@@ -219,7 +218,7 @@ function save_address() {
                 options.customizeAddress[i].showname = $("#address_auto_id_"+index).val();
             }
         }
-        saveDateToChrome(options);
+        saveDataToChrome(options);
         $("#auto_showname_id_"+index).html($("#showname_auto_id_"+index).val());
     });
 
@@ -241,7 +240,7 @@ function delete_address(){
                 options.webset.splice(i,1);
             }
         }
-        saveDateToChrome(options);
+        saveDataToChrome(options);
         $($(_this).parent().parent().parent().parent().parent()).remove();
 
         $("#auto_customize_id_"+index).parent().parent().remove();
@@ -268,10 +267,11 @@ function reset() {
 
 /**
  * 保存数据到Chrome
- * @param date
+ * @param data
+ * @param flag
  */
-function saveDateToChrome(date, flag) {
-    chrome.storage.local.set({rule_options: date}, function () {
+function saveDataToChrome(data, flag) {
+    chrome.storage.local.set({rule_options: data}, function () {
         if(flag){
             chrome.notifications.create(null, {
                 type: 'basic',

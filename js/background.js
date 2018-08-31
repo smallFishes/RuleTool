@@ -24,3 +24,16 @@ $(function(){
         }
     });
 });
+
+chrome.contextMenus.create({
+    title: "获取查询SQL",
+    documentUrlPatterns:[
+        "http://*/groupama/*",
+        "http://*/groupama-new/*",
+        "http://localhost:9999/web/*",
+        "http://127.0.0.1:9999/web/*"
+    ],
+    onclick: function (t, n,) {
+        chrome.tabs.executeScript(n.id,{file: "js/menu.js", allFrames: true})
+    }
+});
