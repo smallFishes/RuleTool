@@ -31,7 +31,9 @@
         "notifications",
         "webRequest",
         "webRequestBlocking",
-        "storage"
+        "clipboardWrite",
+        "storage",
+        "<all_urls>"
     ],
     "homepage_url": "https://www.baidu.com",
     "content_scripts": [
