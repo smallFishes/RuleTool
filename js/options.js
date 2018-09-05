@@ -214,8 +214,8 @@ function save_address() {
         for(var i=0;  i < options.customizeAddress.length; i++) {
             var customizeAddress = options.customizeAddress[i];
             if(customizeAddress.id == index) {
-                options.customizeAddress[i].address = $("#showname_auto_id_"+index).val();
-                options.customizeAddress[i].showname = $("#address_auto_id_"+index).val();
+                options.customizeAddress[i].showname = $("#showname_auto_id_"+index).val();
+                options.customizeAddress[i].address = $("#address_auto_id_"+index).val();
             }
         }
         saveDataToChrome(options);
